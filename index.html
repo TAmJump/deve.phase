@@ -1,0 +1,597 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title></title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&family=Shippori+Mincho:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1a1a1a;--paper:#fafaf8;--accent:#C8161D;--g1:#f5f5f3;--g2:#e8e8e6;--g3:#d4d4d2;--g4:#999;--hd:#e0e0de;--serif:'Shippori Mincho',serif;--sans:'Noto Sans JP',sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}html{font-size:15px}
+body{font-family:var(--sans);color:var(--ink);background:var(--paper);line-height:1.8}
+.hdr{background:var(--hd);color:var(--ink);padding:2rem 0 0}
+.hdr .inner{max-width:900px;margin:0 auto;padding:0 1.5rem;display:flex;justify-content:space-between;align-items:flex-end}
+.hdr h1{font-family:var(--serif);font-size:1.5rem;font-weight:700;letter-spacing:.08em;line-height:1.3}
+.hdr h1 small{display:block;font-size:.6rem;color:var(--g4);margin-bottom:.3rem;font-family:var(--sans)}
+.corp-info{text-align:right;font-size:.65rem;color:var(--g4)}.corp-info strong{color:var(--ink)}
+.corp-sel select{font-size:.7rem;font-family:var(--sans);padding:.2rem .4rem;border:1px solid var(--g3);margin-bottom:.4rem}
+.tabs{max-width:900px;margin:0 auto;padding:0 1.5rem;display:flex;margin-top:1.2rem}
+.tab{padding:.6rem 1.5rem;font-size:.8rem;font-weight:600;cursor:pointer;color:var(--g4);border-bottom:3px solid transparent;user-select:none}
+.tab:hover{color:var(--ink)}.tab.on{color:var(--ink);border-bottom-color:var(--accent)}
+.page{display:none;max-width:900px;margin:0 auto;padding:2rem 1.5rem 3rem}.page.on{display:block}
+.intro{margin-bottom:2rem;padding:1rem 1.2rem;background:var(--g1);border-left:4px solid var(--ink);font-size:.78rem;line-height:2}.intro strong{color:var(--accent)}
+.sec{margin-bottom:2.5rem}.sec-hd{display:flex;align-items:center;gap:.8rem;margin-bottom:1rem;padding-bottom:.5rem;border-bottom:2px solid var(--ink)}
+.sec-n{background:var(--hd);color:var(--ink);font-family:var(--serif);font-size:.85rem;font-weight:700;width:2rem;height:2rem;display:flex;align-items:center;justify-content:center;border:1px solid var(--g3)}
+.sec-t{font-family:var(--serif);font-size:1.05rem;font-weight:700}.sec-s{font-size:.6rem;color:var(--g4);margin-left:auto}
+.q{margin-bottom:1rem;padding:.8rem 1rem;background:#fff;border:1px solid var(--g2)}
+.ql{font-size:.78rem;font-weight:600;margin-bottom:.4rem;display:flex;align-items:center;gap:.5rem}
+.ql .req{font-size:.5rem;background:var(--accent);color:#fff;padding:1px 5px}.ql .opt{font-size:.5rem;background:var(--g3);padding:1px 5px}
+.cg{display:flex;flex-wrap:wrap;gap:.35rem}
+.ch{display:inline-flex;font-size:.73rem;padding:.3rem .65rem;border:1px solid var(--g2);cursor:pointer;user-select:none;background:#fff}.ch:hover{border-color:var(--ink);background:var(--g1)}.ch.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.oi{display:none;margin-top:.4rem;width:100%;max-width:400px;padding:.35rem .6rem;font-size:.73rem;font-family:var(--sans);border:1px solid var(--g2)}.oi.show{display:block}
+select{width:100%;padding:.45rem .65rem;font-size:.78rem;font-family:var(--sans);border:1px solid var(--g2);background:#fff}
+input[type="text"],textarea{width:100%;padding:.45rem .65rem;font-size:.78rem;font-family:var(--sans);border:1px solid var(--g2);background:#fff}
+textarea{resize:none;min-height:55px;overflow:hidden;field-sizing:content}
+.r2{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}.r3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.5rem}
+.sl{font-size:.68rem;font-weight:500;color:var(--g4);margin-bottom:.15rem}
+.ar{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:.5rem;align-items:end;margin-bottom:.35rem}
+.ar-rm{background:none;border:1px solid var(--g3);color:var(--g4);font-size:.65rem;padding:.35rem .45rem;cursor:pointer}.ar-rm:hover{background:var(--accent);color:#fff}
+.ar-add{background:var(--g1);border:1px dashed var(--g3);font-size:.73rem;padding:.45rem;cursor:pointer;text-align:center;margin-top:.25rem}.ar-add:hover{background:var(--ink);color:#fff}
+.ci{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:2rem;padding:1rem;background:var(--g1)}.ci label{font-size:.68rem;font-weight:500}.ci input{margin-top:.2rem}
+.sb{display:flex;justify-content:space-between;align-items:center;padding:.5rem 1rem;background:var(--g1);font-size:.68rem;color:var(--g4);margin-top:1rem}
+.sb button{background:none;border:none;color:var(--accent);cursor:pointer;font-size:.68rem;font-family:var(--sans)}
+.memo{background:var(--g1);border-style:dashed}
+.phase{margin-bottom:2rem;border:2px solid var(--g3)}
+.ph-hd{display:flex;align-items:center;background:var(--hd);padding:.6rem 1.1rem;gap:.7rem}
+.ph-check{display:flex;align-items:center;gap:.5rem;cursor:pointer;margin:0}
+.ph-check input[type="checkbox"]{width:1.1rem;height:1.1rem;accent-color:var(--accent);cursor:pointer}
+.ph-num{font-family:var(--serif);font-size:1.2rem;font-weight:700}.ph-title{font-size:.9rem;font-weight:600}.ph-desc{font-size:.6rem;color:var(--g4);margin-left:auto}
+.ph-body{padding:1rem}
+.item{display:grid;grid-template-columns:auto 1fr auto;gap:.7rem;align-items:center;padding:.55rem .4rem;border-bottom:1px solid var(--g2);cursor:pointer}.item:last-child{border-bottom:none}.item:hover{background:var(--g1)}.item.on{background:#f0f7f0}
+.icb{width:1.2rem;height:1.2rem;accent-color:var(--ink);cursor:pointer}
+.item-nm{font-size:.78rem;font-weight:500}.item-dt{font-size:.63rem;color:var(--g4)}
+.item-pr{font-size:.82rem;font-weight:700;font-family:var(--serif);text-align:right}.item.on .item-pr{color:var(--accent)}
+.tbar{display:flex;justify-content:space-between;align-items:center;background:var(--hd);padding:.8rem 1.2rem}
+.tbar-l{font-size:.8rem;font-weight:500}.tbar-l small{display:block;font-size:.55rem;color:var(--g4)}
+.tbar-v{font-family:var(--serif);font-size:1.7rem;font-weight:700}.tbar-v small{font-size:.65rem}
+.note{font-size:.68rem;color:var(--g4);line-height:1.8;padding:1rem;background:var(--g1);margin-top:1.2rem}.note strong{color:var(--ink)}
+.eci{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.5rem;margin-bottom:1.5rem;padding:1rem;background:var(--g1);font-size:.68rem}.eci label{font-weight:500}.eci input{width:100%;margin-top:.15rem;padding:.35rem .55rem;font-size:.78rem;font-family:var(--sans);border:1px solid var(--g2)}
+.sel-other{display:none;margin-top:.3rem}.sel-other.show{display:block}
+.acts{display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap;padding:1.5rem 0;border-top:2px solid var(--g3)}
+.btn{padding:.7rem 1.8rem;font-size:.8rem;font-family:var(--sans);font-weight:600;border:none;cursor:pointer}
+.bp{background:var(--ink);color:#fff}.bp:hover{background:var(--accent)}.bs{background:#fff;color:var(--ink);border:2px solid var(--ink)}.bs:hover{background:var(--ink);color:#fff}
+.ft{text-align:center;padding:1.2rem;font-size:.6rem;color:var(--g4);border-top:1px solid var(--g2)}.ft strong{color:var(--ink)}
+.prn-only{display:none}
+@media print{
+@page{size:A4;margin:18mm 15mm}
+body{font-size:10px;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.hdr,.tabs,.acts,.sb,.ar-add,.ar-rm,.ft,.corp-sel,.intro,.eci{display:none!important}
+.page{display:none!important;max-width:100%;padding:0}
+body.pr-h #pg0{display:block!important}
+body.pr-e #pg1{display:block!important}
+.prn-only{display:block!important}
+/* Hearing: proposal style */
+.ci{display:none!important}
+.prn-ci{display:block!important}
+.sec{page-break-inside:avoid;margin-bottom:1rem;border:none}
+.sec-hd{border-bottom:1.5px solid #333;margin-bottom:.5rem}
+.sec-n{background:#eee!important;-webkit-print-color-adjust:exact}
+.q{border:none!important;padding:.4rem 0;margin-bottom:.3rem;background:none!important}
+.ql{font-size:.7rem;color:#555;margin-bottom:.2rem}
+.ql .req,.ql .opt{display:none}
+.memo{display:none!important}
+.memo:has(textarea:not(:placeholder-shown)){display:block!important}
+/* Chips: only show selected */
+.cg{gap:.25rem}
+.ch{display:none!important;font-size:.65rem;padding:.15rem .5rem}
+.ch.on{display:inline-flex!important;background:#333!important;color:#fff!important;-webkit-print-color-adjust:exact}
+.oi:not(.show){display:none!important}
+.oi.show{border:none;padding:0;font-size:.7rem}
+/* Inputs as text */
+input[type="text"],select,textarea{border:none!important;background:none!important;padding:.1rem 0!important;font-size:.72rem}
+textarea{overflow:visible!important;height:auto!important;max-height:none!important}
+select{-webkit-appearance:none;appearance:none}
+.sel-other:not(.show){display:none!important}
+.sl{font-size:.6rem}
+.ar{grid-template-columns:1fr 1fr 1fr!important;gap:.3rem}
+.ar select,.ar input{font-size:.7rem}
+.r2,.r3{gap:.3rem}
+.honorific{display:none!important}
+/* Estimate */
+.phase{page-break-inside:avoid;border:1.5px solid #999;margin-bottom:1rem}
+.ph-hd{background:#eee!important;-webkit-print-color-adjust:exact;padding:.4rem .8rem}
+.ph-check input[type="checkbox"]{display:none}
+.ph-num{font-size:1rem}
+.ph-body{padding:.5rem .8rem}
+.item{padding:.35rem .3rem;font-size:.7rem}
+.item:not(.on){opacity:.4}
+.item.on{background:#f5f5f0!important;-webkit-print-color-adjust:exact}
+.icb{display:none}
+.phd[style*="display: none"]{display:none!important}
+.disc-field,.disc-memo{font-size:.7rem}
+.note{font-size:.62rem;padding:.5rem;background:#f8f8f8!important;-webkit-print-color-adjust:exact}
+}
+@media(max-width:600px){.hdr .inner{flex-direction:column;align-items:flex-start;gap:.4rem}.r2,.r3{grid-template-columns:1fr}.ar{grid-template-columns:1fr 1fr}.tab{padding:.5rem .8rem;font-size:.7rem}.eci{grid-template-columns:1fr}}
+</style>
+</head><body>
+<div class="hdr"><div class="inner">
+<h1><small>CARE FACILITY DEVELOPMENT</small>介護・医療施設開発</h1>
+<div class="corp-info"><div class="corp-sel"><select id="corpSel"><option value="A">タムジ株式会社</option><option value="B">株式会社メディパス</option><option value="C">株式会社さかえケアサービス</option></select></div><span id="corpDetail">〒103-0004 東京都中央区東日本橋3-3-17 Re-Know4B<br>mail：info&#64;tamjump.com</span></div>
+</div><div class="tabs"><div class="tab on" data-tab="0">ヒアリングシート</div><div class="tab" data-tab="1">見積り構造</div></div></div>
+<div class="page on" id="pg0">
+<div class="prn-only" id="prnH" style="margin-bottom:2rem">
+<div style="text-align:center;font-family:var(--serif);font-size:2rem;font-weight:700;letter-spacing:.3em;padding:1rem 0;border-bottom:3px double #333;margin-bottom:1.5rem">ヒアリングシート</div>
+<div style="display:flex;justify-content:space-between;gap:2rem;margin-bottom:1.5rem">
+<div style="flex:1"><div style="font-size:.95rem;font-weight:600;border-bottom:1px solid #333;padding-bottom:.3rem;margin-bottom:.5rem" id="prnHCli"></div><div style="font-size:.72rem;color:#666">介護・医療施設の新規開発に関するヒアリング内容</div></div>
+<div style="text-align:right;font-size:.6rem;line-height:2"><div style="font-size:.72rem;margin-bottom:.2rem"><span style="color:#888">作成日：</span><span id="prnHDt"></span></div><div id="prnHC"></div></div>
+</div>
+<div class="prn-ci" style="display:none;font-size:.7rem;line-height:1.8;margin-bottom:1rem">
+<div style="display:flex;gap:2rem;padding:.3rem 0;border-bottom:1px solid #ddd"><div><span style="color:#888">ご担当者：</span><span id="prnF2" style="font-weight:600"></span></div><div><span style="color:#888">TEL：</span><span id="prnF3"></span></div><div><span style="color:#888">Email：</span><span id="prnF4"></span></div></div>
+<div style="display:flex;gap:2rem;padding:.3rem 0"><div><span style="color:#888">ヒアリング日：</span><span id="prnF5"></span></div><div><span style="color:#888">担当：</span><span id="prnF6"></span></div></div>
+</div>
+</div>
+<div class="intro">本シートは、介護・医療施設の新規開発にあたり、<strong>事業構想の整理・概算費用の算出・事業提案書の作成</strong>に必要な情報を事前に確認するためのものです。</div>
+<div class="ci"><label>法人名<span style="display:inline-flex;align-items:center;gap:0;width:100%"><input type="text" id="f1" placeholder="株式会社○○" style="flex:1"><span class="honorific" id="h1" style="font-size:.75rem;font-weight:600;white-space:nowrap;padding-left:.3rem;display:none">御中</span></span></label><label>ご担当者名<span style="display:inline-flex;align-items:center;gap:0;width:100%"><input type="text" id="f2" placeholder="山田 太郎" style="flex:1"><span class="honorific" id="h2" style="font-size:.75rem;font-weight:600;white-space:nowrap;padding-left:.3rem;display:none">様</span></span></label><label>連絡先（TEL）<input type="text" id="f3" placeholder="090-0000-0000"></label><label>連絡先（Email）<input type="text" id="f4" placeholder="info&#64;example.com"></label><label>ヒアリング日<input type="text" id="f5" placeholder="2026年  月  日"></label><label>担当（当社）<input type="text" id="f6" value="タムジ株式会社"></label></div>
+<div class="sec"><div class="sec-hd"><div class="sec-n">A</div><div class="sec-t">事業目的</div><div class="sec-s">最重要</div></div>
+<div class="q"><div class="ql"><span class="req">必須</span>事業目的（複数選択可）</div><div class="cg" data-m="m"><span class="ch">投資型（利回り重視）</span><span class="ch">本業（自社運営）</span><span class="ch">土地活用</span><span class="ch">M&amp;A後の移転・建替</span><span class="ch">新規参入</span><span class="ch">将来売却前提</span><span class="ch" data-o>その他</span></div><input type="text" class="oi" placeholder="その他の内容を入力"></div>
+<div class="q"><div class="ql"><span class="req">必須</span>投資回収期間</div><div class="cg" data-m="s"><span class="ch">短期（5〜7年）</span><span class="ch">中期（10〜15年）</span><span class="ch">長期（20年以上）</span><span class="ch">未定</span><span class="ch" data-o>その他</span></div><input type="text" class="oi" placeholder="その他の内容を入力"></div>
+<div class="q"><div class="ql"><span class="opt">任意</span>出店理由（複数選択可）</div><div class="cg" data-m="m"><span class="ch">当該エリア初進出</span><span class="ch">既存施設あり</span><span class="ch">人材確保目的</span><span class="ch">ブランド展開</span><span class="ch">投資案件として</span><span class="ch">行政からの要請</span><span class="ch" data-o>その他</span></div><input type="text" class="oi" placeholder="その他の内容を入力"></div>
+<div class="q memo"><div class="ql"><span class="opt">任意</span>備考</div><textarea placeholder="補足事項"></textarea></div>
+</div>
+<div class="sec"><div class="sec-hd"><div class="sec-n">B</div><div class="sec-t">想定エリア</div><div class="sec-s">エリアで建築費が変動</div></div>
+<div class="q"><div class="ql"><span class="req">必須</span>候補エリア</div><div id="ac"></div><div class="ar-add" id="aa">＋ エリアを追加</div></div>
+<div class="q"><div class="ql"><span class="opt">任意</span>立地条件</div><div class="cg" data-m="s"><span class="ch">海沿いOK</span><span class="ch">内陸希望</span><span class="ch">どちらでも</span><span class="ch">未定</span><span class="ch" data-o>その他</span></div><input type="text" class="oi" placeholder="その他の内容を入力"></div>
+<div class="q"><div class="ql"><span class="opt">任意</span>アクセス条件（複数選択可）</div><div class="cg" data-m="m"><span class="ch">駅徒歩圏</span><span class="ch">バス路線沿い</span><span class="ch">車アクセス重視</span><span class="ch">病院近接</span><span class="ch">特になし</span><span class="ch" data-o>その他</span></div><input type="text" class="oi" placeholder="その他の内容を入力"></div>
+<div class="q memo"><div class="ql"><span class="opt">任意</span>備考</div><textarea placeholder="補足事項"></textarea></div>
+</div>
+<div class="sec"><div class="sec-hd"><div class="sec-n">C</div><div class="sec-t">土地</div><div class="sec-s">取得状況・規模・予算</div></div>
+<div class="q"><div class="ql"><span class="req">必須</span>土地の状況</div><div class="cg" data-m="s"><span class="ch">未定（これから探す）</span><span class="ch">検討地あり</span><span class="ch">自社保有</span><span class="ch">紹介希望</span><span class="ch" data-o>その他</span></div><input type="text" class="oi" placeholder="その他の内容を入力"></div>
+<div class="q"><div class="ql"><span class="opt">任意</span>土地サイズ・予算</div><div class="r3"><div><div class="sl">面積（坪）</div><select><option value="">選択</option><option>300坪以下</option><option>300〜500坪</option><option>500〜1,000坪</option><option>1,000坪以上</option><option>未定</option></select></div><div><div class="sl">予算</div><select><option value="">選択</option><option>1億以内</option><option>3億以内</option><option>5億以内</option><option>10億以内</option><option>未定</option></select></div><div><div class="sl">用途地域</div><select><option value="">選択</option><option>第一種中高層住居専用</option><option>第一種住居</option><option>準住居</option><option>近隣商業</option><option>商業</option><option>準工業</option><option>不明・未定</option></select></div></div></div>
+<div class="q"><div class="ql"><span class="opt">任意</span>検討地の詳細</div><textarea placeholder="住所、面積、地目、接道状況など"></textarea></div>
+<div class="q memo"><div class="ql"><span class="opt">任意</span>備考</div><textarea placeholder="補足事項"></textarea></div>
+</div>
+<div class="sec"><div class="sec-hd"><div class="sec-n">D</div><div class="sec-t">施設種別</div><div class="sec-s">種別で建築費が変わる</div></div>
+<div class="q"><div class="ql"><span class="req">必須</span>施設種別（複数選択可）</div><div class="cg" data-m="m"><span class="ch">住宅型有料老人ホーム</span><span class="ch">介護付有料老人ホーム</span><span class="ch">サ高住</span><span class="ch">特養</span><span class="ch">グループホーム</span><span class="ch">デイサービス</span><span class="ch">訪問看護併設</span><span class="ch">医療連携型</span><span class="ch">複合型</span><span class="ch">未定</span><span class="ch" data-o>その他</span></div><input type="text" class="oi" placeholder="その他の内容を入力"></div>
+<div class="q"><div class="ql"><span class="opt">任意</span>ターゲット層（複数選択可）</div><div class="cg" data-m="m"><span class="ch">自立</span><span class="ch">要支援</span><span class="ch">要介護1-2</span><span class="ch">要介護3-5</span><span class="ch">認知症</span><span class="ch">医療依存度高</span><span class="ch">未定</span><span class="ch" data-o>その他</span></div><input type="text" class="oi" placeholder="その他の内容を入力"></div>
+<div class="q"><div class="ql"><span class="opt">任意</span>入居者の受入方針</div><div class="r2"><div><div class="sl">対象</div><select><option value="">選択</option><option>日本人のみ</option><option>外国人の受入OK</option><option>未定</option></select></div><div><div class="sl">備考</div><input type="text" placeholder="例：ベトナム人コミュニティ向け等"></div></div></div>
+<div class="q memo"><div class="ql"><span class="opt">任意</span>備考</div><textarea placeholder="補足事項"></textarea></div>
+</div>
+<div class="sec"><div class="sec-hd"><div class="sec-n">E</div><div class="sec-t">規模・構造</div><div class="sec-s">居室数・階数・構造</div></div>
+<div class="q"><div class="ql"><span class="req">必須</span>居室数・階数・構造</div><div class="r3"><div><div class="sl">居室数</div><select><option value="">選択</option><option>20室以下</option><option>30室</option><option>50室</option><option>80室</option><option>100室以上</option><option>未定</option></select></div><div><div class="sl">階数</div><select><option value="">選択</option><option>平屋</option><option>2階</option><option>3階</option><option>4〜5階</option><option>6階以上</option><option>未定</option></select></div><div><div class="sl">構造</div><select><option value="">選択</option><option>RC造</option><option>S造</option><option>木造</option><option>SRC造</option><option>未定</option></select></div></div></div>
+<div class="q"><div class="ql"><span class="opt">任意</span>居室仕様</div><div class="r2"><div><div class="sl">タイプ</div><select><option value="">選択</option><option>個室のみ</option><option>個室＋多床室</option><option>未定</option></select></div><div><div class="sl">面積</div><select><option value="">選択</option><option>13㎡</option><option>18㎡</option><option>25㎡以上</option><option>未定</option></select></div></div></div>
+<div class="q memo"><div class="ql"><span class="opt">任意</span>備考</div><textarea placeholder="補足事項"></textarea></div>
+</div>
+<div class="sec"><div class="sec-hd"><div class="sec-n">F</div><div class="sec-t">運営想定</div><div class="sec-s">運営形態・価格帯</div></div>
+<div class="q"><div class="ql"><span class="req">必須</span>運営形態</div><div class="cg" data-m="s"><span class="ch">自社運営</span><span class="ch">運営委託</span><span class="ch">売却前提</span><span class="ch">JV（共同事業）</span><span class="ch">未定</span><span class="ch" data-o>その他</span></div><input type="text" class="oi" placeholder="その他の内容を入力"><div style="margin-top:.6rem"><div class="sl">運営会社名</div><input type="text" placeholder="例：株式会社○○ケアサービス"></div></div>
+<div class="q"><div class="ql"><span class="opt">任意</span>価格帯イメージ</div><div class="cg" data-m="s"><span class="ch">高価格帯（月額20万以上）</span><span class="ch">中間（12〜20万）</span><span class="ch">低価格帯（12万以下）</span><span class="ch">未定</span><span class="ch" data-o>その他</span></div><input type="text" class="oi" placeholder="その他の内容を入力"></div>
+<div class="q"><div class="ql"><span class="opt">任意</span>既存介護事業</div><div class="r2"><div><div class="sl">施設数</div><select><option value="">選択</option><option>なし</option><option>1〜3</option><option>4〜10</option><option>10以上</option></select></div><div><div class="sl">事業者指定</div><select><option value="">選択</option><option>取得済み</option><option>未取得</option><option>不明</option></select></div></div></div>
+<div class="q"><div class="ql"><span class="opt">任意</span>スタッフの雇用方針</div><div class="r2"><div><div class="sl">対象</div><select><option value="">選択</option><option>日本人のみ</option><option>外国人の受入OK（特定技能等）</option><option>未定</option></select></div><div><div class="sl">備考</div><input type="text" placeholder="例：EPA候補者の受入実績あり"></div></div></div>
+<div class="q memo"><div class="ql"><span class="opt">任意</span>備考</div><textarea placeholder="補足事項"></textarea></div>
+</div>
+<div class="sec"><div class="sec-hd"><div class="sec-n">G</div><div class="sec-t">投資条件</div><div class="sec-s">予算・利回り・融資</div></div>
+<div class="q"><div class="ql"><span class="req">必須</span>投資条件</div><div class="r3"><div><div class="sl">総投資想定</div><select><option value="">選択</option><option>3億以内</option><option>5億以内</option><option>10億以内</option><option>20億以内</option><option>20億超</option><option>未定</option></select></div><div><div class="sl">期待利回り</div><select><option value="">選択</option><option>5%</option><option>6%</option><option>7%</option><option>8%</option><option>10%以上</option><option>未定</option></select></div><div><div class="sl">融資想定</div><select data-has-other="1"><option value="">選択</option><option>地銀予定</option><option>メガバンク</option><option>政策金融公庫</option><option>自己資金中心</option><option>未定</option><option>その他</option></select><input type="text" class="sel-other" placeholder="融資先の詳細"></div></div></div>
+<div class="q"><div class="ql"><span class="opt">任意</span>資金構成</div><div class="r2"><div><div class="sl">自己資金割合</div><select><option value="">選択</option><option>10%</option><option>20%</option><option>30%</option><option>50%以上</option><option>未定</option></select></div><div><div class="sl">既存取引銀行</div><input type="text" placeholder="例：琉球銀行"></div></div></div>
+<div class="q memo"><div class="ql"><span class="opt">任意</span>備考</div><textarea placeholder="補足事項"></textarea></div>
+</div>
+<div class="sec"><div class="sec-hd"><div class="sec-n">H</div><div class="sec-t">スケジュール</div><div class="sec-s">着手時期・開業目標</div></div>
+<div class="q"><div class="ql"><span class="req">必須</span>着手時期</div><div class="cg" data-m="s"><span class="ch">すぐ動きたい</span><span class="ch">半年以内</span><span class="ch">1年以内</span><span class="ch">情報収集段階</span><span class="ch" data-o>その他</span></div><input type="text" class="oi" placeholder="その他の内容を入力"></div>
+<div class="q"><div class="ql"><span class="opt">任意</span>開業目標</div><div class="r2"><div><div class="sl">目標年</div><select><option value="">選択</option><option>2026年</option><option>2027年</option><option>2028年</option><option>2029年以降</option><option>未定</option></select></div><div><div class="sl">備考</div><input type="text" placeholder="例：来年度中に着工したい"></div></div></div>
+<div class="q memo"><div class="ql"><span class="opt">任意</span>備考</div><textarea placeholder="補足事項"></textarea></div>
+</div>
+<div class="sec"><div class="sec-hd"><div class="sec-n">I</div><div class="sec-t">ご依頼範囲</div><div class="sec-s">業務範囲の明確化</div></div>
+<div class="q"><div class="ql"><span class="req">必須</span>ご依頼業務（複数選択可）</div><div class="cg" data-m="m"><span class="ch">土地探索・仲介</span><span class="ch">事業収支作成</span><span class="ch">企画・コンセプト設計</span><span class="ch">基本設計・実施設計</span><span class="ch">建築（施工管理）</span><span class="ch">行政手続・申請</span><span class="ch">採用計画</span><span class="ch">開業準備・集客</span><span class="ch">運営支援</span><span class="ch">投資スキーム構築</span><span class="ch">全て一括</span><span class="ch" data-o>その他</span></div><input type="text" class="oi" placeholder="その他の内容を入力"></div>
+<div class="q"><div class="ql"><span class="opt">任意</span>その他ご要望</div><textarea placeholder="補助金活用の相談、他社との比較検討中など"></textarea></div>
+</div>
+<div style="background:var(--g1);padding:1rem"><div style="font-family:var(--serif);font-weight:700;font-size:.82rem;margin-bottom:.3rem">本ヒアリングをもとにご提供するもの</div><div style="font-size:.72rem;line-height:2">① 開発総額レンジ ② 建築費概算 ③ 簡易収支モデル ④ 事業提案書 ⑤ 報酬お見積り</div></div>
+<div class="sb"><span id="ss">未保存</span><button id="btnClr">入力をすべてクリア</button></div>
+<div class="acts"><button class="btn bp" id="btnP1">ヒアリングシートを印刷</button><button class="btn bs" id="btnT1">テキスト出力</button><button class="btn bs" id="btnD1">HTML保存</button></div>
+</div>
+<div class="page" id="pg1">
+<div class="prn-only" id="prnE" style="margin-bottom:2rem">
+<div style="text-align:center;font-family:var(--serif);font-size:2rem;font-weight:700;letter-spacing:.3em;padding:1rem 0;border-bottom:3px double #333;margin-bottom:1.5rem">御 見 積 書</div>
+<div style="display:flex;justify-content:space-between;gap:2rem">
+<div style="flex:1"><div style="font-size:.95rem;font-weight:600;border-bottom:1px solid #333;padding-bottom:.3rem;margin-bottom:.5rem" id="prnEC">クライアント名 御中</div><div style="font-size:.72rem;color:#666">下記の通りお見積り申し上げます。</div><div style="font-size:.72rem;color:#666;margin-top:.2rem" id="prnEPj2"></div></div>
+<div style="text-align:right;font-size:.6rem;line-height:2"><div style="font-size:.72rem;margin-bottom:.2rem"><span style="color:#888">発行日：</span><span id="prnED"></span></div><div id="prnECo"></div></div>
+</div>
+</div>
+<div class="intro">各Phaseのチェックボックスをオンにすると詳細が表示されます。<strong>Phase 0</strong>は金額が連動します。</div>
+<div class="eci"><label>クライアント<span style="display:inline-flex;align-items:center;gap:0;width:100%"><input type="text" id="ecl" placeholder="株式会社○○" style="flex:1"><span class="honorific" id="hecl" style="font-size:.75rem;font-weight:600;white-space:nowrap;padding-left:.3rem;display:none">御中</span></span></label><label>案件名<input type="text" id="epj" placeholder="介護施設開発"></label><label>作成日<input type="text" id="edt" value=""></label></div>
+<div class="phase" id="ph0"><div class="ph-hd"><label class="ph-check"><input type="checkbox" class="phcb" data-ph="0" checked><span class="ph-num">Phase 0</span></label><div class="ph-title">開発可能性調査</div><div class="ph-desc">企画前段階</div></div>
+<div class="ph-body phd" data-ph="0">
+<label class="item" data-price="100000"><input type="checkbox" class="icb" checked><div><div class="item-nm">ヒアリング整理・要件定義</div><div class="item-dt">事業目的・投資条件の整理</div></div><div class="item-pr">&yen;100,000</div></label>
+<label class="item" data-price="150000"><input type="checkbox" class="icb" checked><div><div class="item-nm">エリア市場分析</div><div class="item-dt">高齢者人口推計・競合調査</div></div><div class="item-pr">&yen;150,000</div></label>
+<label class="item" data-price="100000"><input type="checkbox" class="icb" checked><div><div class="item-nm">土地価格帯調査</div><div class="item-dt">用途地域別相場・候補地リスト</div></div><div class="item-pr">&yen;100,000</div></label>
+<label class="item" data-price="150000"><input type="checkbox" class="icb" checked><div><div class="item-nm">建築費概算（構造別）</div><div class="item-dt">RC/S造・塩害仕様・階数別</div></div><div class="item-pr">&yen;150,000</div></label>
+<label class="item" data-price="200000"><input type="checkbox" class="icb" checked><div><div class="item-nm">居室数別 収支モデル</div><div class="item-dt">30/50/80室パターン比較</div></div><div class="item-pr">&yen;200,000</div></label>
+<label class="item" data-price="100000"><input type="checkbox" class="icb" checked><div><div class="item-nm">投資回収シミュレーション</div><div class="item-dt">NOI・CCR・DSCR・IRR試算</div></div><div class="item-pr">&yen;100,000</div></label>
+<label class="item" data-price="50000"><input type="checkbox" class="icb"><div><div class="item-nm">開発スケジュール作成</div><div class="item-dt">ガントチャート作成</div></div><div class="item-pr">&yen;50,000</div></label>
+<label class="item" data-price="50000"><input type="checkbox" class="icb"><div><div class="item-nm">リスク整理・対策提案</div><div class="item-dt">建築・採用・法規制リスク</div></div><div class="item-pr">&yen;50,000</div></label>
+<label class="item" data-price="200000"><input type="checkbox" class="icb" checked><div><div class="item-nm">事業提案書（レポート）</div><div class="item-dt">全分析統合・投資判断品質</div></div><div class="item-pr">&yen;200,000</div></label>
+<label class="item" data-price="100000"><input type="checkbox" class="icb"><div><div class="item-nm">採用難易度・人件費分析</div><div class="item-dt">人材充足率・賃金</div></div><div class="item-pr">&yen;100,000</div></label>
+<label class="item" data-price="50000"><input type="checkbox" class="icb"><div><div class="item-nm">補助金・助成金調査</div><div class="item-dt">補助金・申請スケジュール</div></div><div class="item-pr">&yen;50,000</div></label>
+</div><div class="phd" data-ph="0" style="background:var(--hd);padding:.8rem 1.2rem">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.4rem"><div style="font-size:.78rem;font-weight:600">Phase 0 小計（税抜）</div><div style="font-family:var(--serif);font-size:1.4rem;font-weight:700" id="total0">&mdash;</div></div>
+<div id="taxBlock0" style="display:none">
+<div style="display:flex;justify-content:space-between;font-size:.72rem;color:var(--g4);padding:.2rem 0;border-top:1px solid var(--g3)"><span>出精値引き</span><span id="disc0"></span></div>
+<div style="display:flex;justify-content:space-between;font-size:.72rem;color:var(--g4);padding:.2rem 0"><span>値引後（税抜）</span><span id="sub0"></span></div>
+<div style="display:flex;justify-content:space-between;font-size:.72rem;color:var(--g4);padding:.2rem 0"><span>消費税（10%）</span><span id="tax0"></span></div>
+<div style="display:flex;justify-content:space-between;align-items:center;padding:.4rem 0;border-top:2px solid var(--ink);margin-top:.2rem"><div style="font-size:.82rem;font-weight:700">合計（税込）</div><div style="font-family:var(--serif);font-size:1.5rem;font-weight:700;color:var(--accent)" id="inc0"></div></div>
+</div></div>
+<div class="phd" data-ph="0" style="background:var(--g1);padding:.8rem 1.2rem;border-top:1px dashed var(--g3)">
+<div style="display:grid;grid-template-columns:auto 1fr auto;gap:.5rem;align-items:center">
+<div style="font-size:.7rem;font-weight:600;white-space:nowrap">出精値引き</div>
+<input type="text" class="disc-field" data-ph="0" placeholder="例：-50,000" style="max-width:160px;padding:.3rem .5rem;font-size:.75rem;border:1px solid var(--g3);font-family:var(--sans)">
+<div style="font-size:.85rem;font-weight:700;font-family:var(--serif);color:var(--accent)" id="dv0"></div>
+</div>
+<div style="margin-top:.5rem"><div style="font-size:.68rem;font-weight:500;color:var(--g4);margin-bottom:.2rem">備考</div><input type="text" class="disc-memo" data-ph="0" placeholder="出精値引き理由・条件等" style="width:100%;padding:.3rem .5rem;font-size:.73rem;border:1px solid var(--g2);font-family:var(--sans)"></div>
+</div></div>
+<div class="phase" id="ph1"><div class="ph-hd"><label class="ph-check"><input type="checkbox" class="phcb" data-ph="1"><span class="ph-num">Phase 1</span></label><div class="ph-title">企画・基本設計</div><div class="ph-desc">土地〜事業計画確定</div></div>
+<div class="ph-body phd" data-ph="1" style="display:none">
+<label class="item" data-price="500000"><input type="checkbox" class="icb"><div><div class="item-nm">土地選定／取得サポート</div><div class="item-dt">候補地評価・交渉支援</div></div><div class="item-pr">&yen;500,000</div></label>
+<label class="item" data-price="600000"><input type="checkbox" class="icb"><div><div class="item-nm">ボリューム設計</div><div class="item-dt">最大容積・配置・動線検証</div></div><div class="item-pr">&yen;600,000</div></label>
+<label class="item" data-price="500000"><input type="checkbox" class="icb"><div><div class="item-nm">施設コンセプト策定</div><div class="item-dt">ターゲット・差別化</div></div><div class="item-pr">&yen;500,000</div></label>
+<label class="item" data-price="500000"><input type="checkbox" class="icb"><div><div class="item-nm">事業収支確定</div><div class="item-dt">確定版収支モデル</div></div><div class="item-pr">&yen;500,000</div></label>
+<label class="item" data-price="400000"><input type="checkbox" class="icb"><div><div class="item-nm">建築概算（精緻版）</div><div class="item-dt">設計図ベース積算・VE</div></div><div class="item-pr">&yen;400,000</div></label>
+<label class="item" data-price="400000"><input type="checkbox" class="icb"><div><div class="item-nm">金融機関説明資料</div><div class="item-dt">融資審査用事業計画書</div></div><div class="item-pr">&yen;400,000</div></label>
+<label class="item" data-price="600000"><input type="checkbox" class="icb"><div><div class="item-nm">投資スキーム構築</div><div class="item-dt">SPC・信託等の設計</div></div><div class="item-pr">&yen;600,000</div></label>
+<label class="item" data-price="600000"><input type="checkbox" class="icb"><div><div class="item-nm">事業提案書（完成版）</div><div class="item-dt">投資実行判断用</div></div><div class="item-pr">&yen;600,000</div></label>
+</div><div class="phd" data-ph="1" style="display:none;background:var(--hd);padding:.8rem 1.2rem">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.4rem"><div style="font-size:.78rem;font-weight:600">Phase 1 小計（税抜）</div><div style="font-family:var(--serif);font-size:1.4rem;font-weight:700" id="total1">&mdash;</div></div>
+<div id="taxBlock1" style="display:none">
+<div style="display:flex;justify-content:space-between;font-size:.72rem;color:var(--g4);padding:.2rem 0;border-top:1px solid var(--g3)"><span>出精値引き</span><span id="disc1"></span></div>
+<div style="display:flex;justify-content:space-between;font-size:.72rem;color:var(--g4);padding:.2rem 0"><span>値引後（税抜）</span><span id="sub1"></span></div>
+<div style="display:flex;justify-content:space-between;font-size:.72rem;color:var(--g4);padding:.2rem 0"><span>消費税（10%）</span><span id="tax1"></span></div>
+<div style="display:flex;justify-content:space-between;align-items:center;padding:.4rem 0;border-top:2px solid var(--ink);margin-top:.2rem"><div style="font-size:.82rem;font-weight:700">合計（税込）</div><div style="font-family:var(--serif);font-size:1.5rem;font-weight:700;color:var(--accent)" id="inc1"></div></div>
+</div></div>
+<div class="phd" data-ph="1" style="display:none;background:var(--g1);padding:.8rem 1.2rem;border-top:1px dashed var(--g3)">
+<div style="display:grid;grid-template-columns:auto 1fr auto;gap:.5rem;align-items:center">
+<div style="font-size:.7rem;font-weight:600;white-space:nowrap">出精値引き</div>
+<input type="text" class="disc-field" data-ph="1" placeholder="例：-100,000" style="max-width:160px;padding:.3rem .5rem;font-size:.75rem;border:1px solid var(--g3);font-family:var(--sans)">
+<div style="font-size:.85rem;font-weight:700;font-family:var(--serif);color:var(--accent)" id="dv1"></div>
+</div>
+<div style="margin-top:.5rem"><div style="font-size:.68rem;font-weight:500;color:var(--g4);margin-bottom:.2rem">備考</div><input type="text" class="disc-memo" data-ph="1" placeholder="出精値引き理由・条件等" style="width:100%;padding:.3rem .5rem;font-size:.73rem;border:1px solid var(--g2);font-family:var(--sans)"></div>
+</div></div>
+<div class="phase"><div class="ph-hd"><label class="ph-check"><input type="checkbox" class="phcb" data-ph="2"><span class="ph-num">Phase 2</span></label><div class="ph-title">実施設計・行政・開発PM</div><div class="ph-desc">※設計事務所とは別</div></div>
+<div class="ph-body phd" data-ph="2" style="display:none">
+<label class="item" data-price="0"><input type="checkbox" class="icb"><div><div class="item-nm">設計会社選定</div><div class="item-dt">コンペ・プロポーザル評価</div></div><div class="item-pr">個別</div></label>
+<label class="item" data-price="0"><input type="checkbox" class="icb"><div><div class="item-nm">設計監修</div><div class="item-dt">品質チェック・動線レビュー</div></div><div class="item-pr">個別</div></label>
+<label class="item" data-price="0"><input type="checkbox" class="icb"><div><div class="item-nm">行政協議</div><div class="item-dt">都市計画・建築確認・消防</div></div><div class="item-pr">個別</div></label>
+<label class="item" data-price="0"><input type="checkbox" class="icb"><div><div class="item-nm">建築コスト調整</div><div class="item-dt">VE提案・仕様調整</div></div><div class="item-pr">個別</div></label>
+<label class="item" data-price="0"><input type="checkbox" class="icb"><div><div class="item-nm">施工会社選定</div><div class="item-dt">ゼネコン・工務店選定</div></div><div class="item-pr">個別</div></label>
+<label class="item" data-price="0"><input type="checkbox" class="icb"><div><div class="item-nm">入札管理</div><div class="item-dt">入札要件・比較表</div></div><div class="item-pr">個別</div></label>
+<label class="item" data-price="0"><input type="checkbox" class="icb"><div><div class="item-nm">工程管理</div><div class="item-dt">着工〜竣工の進捗管理</div></div><div class="item-pr">個別</div></label>
+<label class="item" data-price="0"><input type="checkbox" class="icb"><div><div class="item-nm">投資家資料</div><div class="item-dt">進捗レポート・報告書</div></div><div class="item-pr">個別</div></label>
+<label class="item" data-price="0"><input type="checkbox" class="icb"><div><div class="item-nm">融資支援</div><div class="item-dt">金融機関折衝・融資実行</div></div><div class="item-pr">個別</div></label>
+</div><div class="tbar phd" data-ph="2" style="display:none"><div class="tbar-l">Phase 2<small>総事業費に対する割合（税別）</small></div><div class="tbar-v" style="font-size:1.2rem">総事業費の 2.5〜3.5%</div></div>
+<div class="phd" data-ph="2" style="display:none;background:var(--g1);padding:.8rem 1.2rem;border-top:1px dashed var(--g3)">
+<div style="font-size:.72rem;line-height:2;margin-bottom:.5rem">参考：総事業費 12億円の場合 → <strong style="font-family:var(--serif)">3,000万〜4,200万円</strong>（税別）</div>
+<div style="display:grid;grid-template-columns:auto 1fr auto;gap:.5rem;align-items:center">
+<div style="font-size:.7rem;font-weight:600;white-space:nowrap">出精値引き</div>
+<input type="text" class="disc-field" data-ph="2" placeholder="例：-0.5%" style="max-width:160px;padding:.3rem .5rem;font-size:.75rem;border:1px solid var(--g3);font-family:var(--sans)">
+<div style="font-size:.85rem;font-weight:700;font-family:var(--serif);color:var(--accent)" id="dv2"></div>
+</div>
+<div style="margin-top:.5rem"><div style="font-size:.68rem;font-weight:500;color:var(--g4);margin-bottom:.2rem">備考</div><input type="text" class="disc-memo" data-ph="2" placeholder="出精値引き理由・条件等" style="width:100%;padding:.3rem .5rem;font-size:.73rem;border:1px solid var(--g2);font-family:var(--sans)"></div>
+</div></div>
+<div class="phase" id="ph3"><div class="ph-hd"><label class="ph-check"><input type="checkbox" class="phcb" data-ph="3"><span class="ph-num">Phase 3</span></label><div class="ph-title">開業準備</div><div class="ph-desc">採用・集客・価格設計</div></div>
+<div class="ph-body phd" data-ph="3" style="display:none">
+<label class="item" data-price="500000"><input type="checkbox" class="icb"><div><div class="item-nm">採用戦略</div><div class="item-dt">職種別計画・媒体選定</div></div><div class="item-pr">&yen;500,000</div></label>
+<label class="item" data-price="400000"><input type="checkbox" class="icb"><div><div class="item-nm">集客設計</div><div class="item-dt">チャネル設計・紹介ルート</div></div><div class="item-pr">&yen;400,000</div></label>
+<label class="item" data-price="300000"><input type="checkbox" class="icb"><div><div class="item-nm">価格設計</div><div class="item-dt">入居金・月額の設定</div></div><div class="item-pr">&yen;300,000</div></label>
+<label class="item" data-price="300000"><input type="checkbox" class="icb"><div><div class="item-nm">業者選定</div><div class="item-dt">備品・食事・清掃等</div></div><div class="item-pr">&yen;300,000</div></label>
+<label class="item" data-price="500000"><input type="checkbox" class="icb"><div><div class="item-nm">HP／LP制作</div><div class="item-dt">施設サイト・LP・SEO</div></div><div class="item-pr">&yen;500,000</div></label>
+<label class="item" data-price="300000"><input type="checkbox" class="icb"><div><div class="item-nm">補助金申請</div><div class="item-dt">申請代行・書類作成</div></div><div class="item-pr">&yen;300,000</div></label>
+<label class="item" data-price="500000"><input type="checkbox" class="icb"><div><div class="item-nm">運営導線設計</div><div class="item-dt">入居者フロー・マニュアル</div></div><div class="item-pr">&yen;500,000</div></label>
+</div><div class="phd" data-ph="3" style="display:none;background:var(--hd);padding:.8rem 1.2rem">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.4rem"><div style="font-size:.78rem;font-weight:600">Phase 3 小計（税抜）</div><div style="font-family:var(--serif);font-size:1.4rem;font-weight:700" id="total3">&mdash;</div></div>
+<div id="taxBlock3" style="display:none">
+<div style="display:flex;justify-content:space-between;font-size:.72rem;color:var(--g4);padding:.2rem 0;border-top:1px solid var(--g3)"><span>出精値引き</span><span id="disc3"></span></div>
+<div style="display:flex;justify-content:space-between;font-size:.72rem;color:var(--g4);padding:.2rem 0"><span>値引後（税抜）</span><span id="sub3"></span></div>
+<div style="display:flex;justify-content:space-between;font-size:.72rem;color:var(--g4);padding:.2rem 0"><span>消費税（10%）</span><span id="tax3"></span></div>
+<div style="display:flex;justify-content:space-between;align-items:center;padding:.4rem 0;border-top:2px solid var(--ink);margin-top:.2rem"><div style="font-size:.82rem;font-weight:700">合計（税込）</div><div style="font-family:var(--serif);font-size:1.5rem;font-weight:700;color:var(--accent)" id="inc3"></div></div>
+</div></div>
+<div class="phd" data-ph="3" style="display:none;background:var(--g1);padding:.8rem 1.2rem;border-top:1px dashed var(--g3)">
+<div style="display:grid;grid-template-columns:auto 1fr auto;gap:.5rem;align-items:center">
+<div style="font-size:.7rem;font-weight:600;white-space:nowrap">出精値引き</div>
+<input type="text" class="disc-field" data-ph="3" placeholder="例：-100,000" style="max-width:160px;padding:.3rem .5rem;font-size:.75rem;border:1px solid var(--g3);font-family:var(--sans)">
+<div style="font-size:.85rem;font-weight:700;font-family:var(--serif);color:var(--accent)" id="dv3"></div>
+</div>
+<div style="margin-top:.5rem"><div style="font-size:.68rem;font-weight:500;color:var(--g4);margin-bottom:.2rem">備考</div><input type="text" class="disc-memo" data-ph="3" placeholder="出精値引き理由・条件等" style="width:100%;padding:.3rem .5rem;font-size:.73rem;border:1px solid var(--g2);font-family:var(--sans)"></div>
+</div></div>
+<div class="phase"><div class="ph-hd"><label class="ph-check"><input type="checkbox" class="phcb" data-ph="4"><span class="ph-num">Phase 4</span></label><div class="ph-title">運営 or JV</div><div class="ph-desc">開業後の関与形態</div></div>
+<div class="ph-body phd" data-ph="4" style="display:none">
+<div style="font-size:.78rem;font-weight:600;margin-bottom:.5rem;padding-bottom:.3rem;border-bottom:1px solid var(--g2)">A：運営委託サポート</div>
+<label class="item" data-price="0"><input type="checkbox" class="icb"><div><div class="item-nm">運営委託サポート</div><div class="item-dt">運営会社選定・契約交渉・KPI管理</div></div><div class="item-pr">月額 15〜30万</div></label>
+<div style="font-size:.78rem;font-weight:600;margin:.8rem 0 .5rem;padding-bottom:.3rem;border-bottom:1px solid var(--g2)">B：開発JV（共同事業）</div>
+<label class="item" data-price="0"><input type="checkbox" class="icb"><div><div class="item-nm">建物持分</div><div class="item-dt">建物の共同所有・持分比率</div></div><div class="item-pr">応相談</div></label>
+<label class="item" data-price="0"><input type="checkbox" class="icb"><div><div class="item-nm">SPC持分</div><div class="item-dt">特別目的会社への出資</div></div><div class="item-pr">○％</div></label>
+<label class="item" data-price="0"><input type="checkbox" class="icb"><div><div class="item-nm">成功報酬</div><div class="item-dt">総事業費に対する報酬</div></div><div class="item-pr">総事業費の1〜3%</div></label>
+<label class="item" data-price="0"><input type="checkbox" class="icb"><div><div class="item-nm">売却益</div><div class="item-dt">将来売却時のキャピタルゲイン配分</div></div><div class="item-pr">○％</div></label>
+</div>
+<div class="tbar phd" data-ph="4" style="display:none"><div class="tbar-l">Phase 4<small>関与形態に応じて別途協議</small></div><div class="tbar-v" style="font-size:1rem">別途協議</div></div></div>
+<div class="note"><strong>※本見積りについて</strong><br>・税別表示。・Phase 0 はPDF＋Excelで納品。・着手後の変更は協議対応。・Phase 1以降は別途お見積り。・交通費は実費精算。</div>
+<div style="margin-top:1rem;padding:1rem 1.2rem;border:2px solid var(--ink);background:#fff;font-size:.75rem;line-height:2">
+<div style="font-family:var(--serif);font-weight:700;font-size:.82rem;margin-bottom:.5rem;border-bottom:1px solid var(--ink);padding-bottom:.3rem">条件事項</div>
+<div style="padding-left:.5rem">1. 本調査は事業判断のための概算資料作成です。具体的な土地取得交渉・金融機関調整・設計行為は含みません。</div>
+<div style="padding-left:.5rem;margin-top:.3rem">2. 本案件については、Phase 0 完了後に事業実行判断および次フェーズ契約を協議するものとします。</div>
+</div>
+<div class="prn-only" style="display:flex;justify-content:flex-end;margin-top:2rem;padding-top:1rem;border-top:1px solid #ddd"><div style="text-align:center"><div style="width:70px;height:70px;border:1px solid #ccc;margin:0 auto .3rem;display:flex;align-items:center;justify-content:center;font-size:.55rem;color:#ccc">印</div><div style="font-size:.6rem;color:#666" id="prnSN"></div></div></div>
+<div class="acts"><button class="btn bp" id="btnP2">御見積書を印刷</button><button class="btn bs" id="btnD2">HTML保存</button></div>
+</div>
+<div class="ft">タムジ.Corp／&copy; 2026 All rights reserved.</div>
+<script>
+document.addEventListener("DOMContentLoaded",function(){
+var CORPS={
+A:{name:"タムジ株式会社",addr:"〒103-0004 東京都中央区東日本橋3-3-17 Re-Know4B<br>mail：info&#64;tamjump.com",ft:"<strong>タムジ株式会社</strong>｜〒103-0004 東京都中央区東日本橋3-3-17 Re-Know4B｜info&#64;tamjump.com"},
+B:{name:"株式会社メディパス",addr:"〒153-0064 東京都目黒区下目黒2-13-10 RKビル3階<br>TEL：03-6417-4066／FAX：03-6417-4067<br>https://medipass.co.jp/",ft:"<strong>株式会社メディパス</strong>｜〒153-0064 東京都目黒区下目黒2-13-10 RKビル3階｜03-6417-4066"},
+C:{name:"株式会社さかえケアサービス",addr:"〒176-0012 東京都練馬区豊玉北5-11-4 さかえビル201<br>mail：j_oshita&#64;scsgo.co.jp",ft:"<strong>株式会社さかえケアサービス</strong>｜〒176-0012 東京都練馬区豊玉北5-11-4 さかえビル201｜j_oshita&#64;scsgo.co.jp"}
+};
+var P={"北海道": ["札幌市", "函館市", "旭川市", "帯広市", "その他"], "青森県": ["青森市", "八戸市", "その他"], "岩手県": ["盛岡市", "その他"], "宮城県": ["仙台市", "石巻市", "その他"], "秋田県": ["秋田市", "その他"], "山形県": ["山形市", "その他"], "福島県": ["福島市", "郡山市", "いわき市", "その他"], "茨城県": ["水戸市", "つくば市", "その他"], "栃木県": ["宇都宮市", "その他"], "群馬県": ["前橋市", "高崎市", "その他"], "埼玉県": ["さいたま市", "川口市", "川越市", "所沢市", "その他"], "千葉県": ["千葉市", "船橋市", "松戸市", "柏市", "その他"], "東京都": ["千代田区", "中央区", "港区", "新宿区", "渋谷区", "世田谷区", "品川区", "目黒区", "大田区", "練馬区", "板橋区", "足立区", "八王子市", "町田市", "その他"], "神奈川県": ["横浜市", "川崎市", "相模原市", "藤沢市", "その他"], "新潟県": ["新潟市", "長岡市", "その他"], "富山県": ["富山市", "その他"], "石川県": ["金沢市", "その他"], "福井県": ["福井市", "その他"], "山梨県": ["甲府市", "その他"], "長野県": ["長野市", "松本市", "その他"], "岐阜県": ["岐阜市", "その他"], "静岡県": ["静岡市", "浜松市", "その他"], "愛知県": ["名古屋市", "豊田市", "岡崎市", "その他"], "三重県": ["津市", "四日市市", "その他"], "滋賀県": ["大津市", "その他"], "京都府": ["京都市", "宇治市", "その他"], "大阪府": ["大阪市", "堺市", "東大阪市", "豊中市", "その他"], "兵庫県": ["神戸市", "姫路市", "西宮市", "その他"], "奈良県": ["奈良市", "その他"], "和歌山県": ["和歌山市", "その他"], "鳥取県": ["鳥取市", "その他"], "島根県": ["松江市", "その他"], "岡山県": ["岡山市", "倉敷市", "その他"], "広島県": ["広島市", "福山市", "その他"], "山口県": ["下関市", "山口市", "その他"], "徳島県": ["徳島市", "その他"], "香川県": ["高松市", "その他"], "愛媛県": ["松山市", "その他"], "高知県": ["高知市", "その他"], "福岡県": ["福岡市", "北九州市", "久留米市", "その他"], "佐賀県": ["佐賀市", "その他"], "長崎県": ["長崎市", "佐世保市", "その他"], "熊本県": ["熊本市", "その他"], "大分県": ["大分市", "別府市", "その他"], "宮崎県": ["宮崎市", "その他"], "鹿児島県": ["鹿児島市", "その他"], "沖縄県": ["那覇市", "浦添市", "宜野湾市", "沖縄市", "うるま市", "豊見城市", "糸満市", "名護市", "南城市", "宮古島市", "石垣市", "読谷村", "北谷町", "その他"]};
+var PK=Object.keys(P);
+function gid(id){return document.getElementById(id)}
+function qa(s){return Array.prototype.slice.call(document.querySelectorAll(s))}
+
+/* Tabs */
+var tabs=qa(".tab");
+var pages=qa(".page");
+for(var i=0;i<tabs.length;i++){
+(function(idx){
+tabs[idx].addEventListener("click",function(){
+for(var j=0;j<tabs.length;j++){
+if(j===idx){tabs[j].classList.add("on");pages[j].classList.add("on")}
+else{tabs[j].classList.remove("on");pages[j].classList.remove("on")}
+}
+window.scrollTo(0,0);
+});
+})(i);
+}
+
+/* Corp */
+gid("corpSel").addEventListener("change",function(){
+var c=CORPS[this.value];
+gid("corpDetail").innerHTML=c.addr;
+
+gid("f6").value=c.name;
+doSave();
+});
+
+/* Chips */
+var chips=qa(".ch");
+for(var ci=0;ci<chips.length;ci++){
+(function(ch){
+ch.addEventListener("click",function(){
+var g=ch.parentElement;
+var mode=g.getAttribute("data-m");
+if(mode==="s"){
+if(ch.classList.contains("on")){ch.classList.remove("on")}
+else{
+var all=g.querySelectorAll(".ch");
+for(var x=0;x<all.length;x++)all[x].classList.remove("on");
+ch.classList.add("on");
+}
+}else{
+ch.classList.toggle("on");
+}
+var oi=g.nextElementSibling;
+if(oi&&oi.classList.contains("oi")){
+if(g.querySelector(".ch[data-o].on")){oi.classList.add("show");oi.focus()}
+else{oi.classList.remove("show")}
+}
+doSave();
+});
+})(chips[ci]);
+}
+
+/* Select other */
+var soSels=qa("select[data-has-other]");
+for(var si=0;si<soSels.length;si++){
+(function(s){
+s.addEventListener("change",function(){
+var inp=s.nextElementSibling;
+if(inp&&inp.classList.contains("sel-other")){
+if(s.value==="その他"){inp.classList.add("show");inp.focus()}else{inp.classList.remove("show")}
+}
+});
+})(soSels[si]);
+}
+
+/* Areas */
+var an=0;
+var ac=gid("ac");
+function prefOpts(){var h='<option value="">選択</option>';for(var k=0;k<PK.length;k++)h+='<option>'+PK[k]+'</option>';return h}
+function cityOpts(p){if(!p||!P[p])return'<option value="">都道府県を先に選択</option>';var h='<option value="">選択</option>';for(var k=0;k<P[p].length;k++)h+='<option>'+P[p][k]+'</option>';return h}
+function addArea(pv,cv,dv){
+an++;var n=an;
+var d=document.createElement("div");d.className="ar";
+d.innerHTML='<div><div class="sl">'+(n===1?"都道府県":"第"+n+"希望")+'</div><select>'+prefOpts()+'</select></div><div><div class="sl">市区町村</div><select><option value="">都道府県を先に選択</option></select></div><div><div class="sl">地名（任意）</div><input type="text" placeholder="例：○○町"></div><button class="ar-rm"'+(n===1?' style="visibility:hidden"':'')+'>&times;</button>';
+ac.appendChild(d);
+var ss=d.querySelectorAll("select");
+ss[0].addEventListener("change",function(){ss[1].innerHTML=cityOpts(ss[0].value);doSave()});
+ss[1].addEventListener("change",doSave);
+d.querySelector("input").addEventListener("input",doSave);
+d.querySelector(".ar-rm").addEventListener("click",function(){d.remove();doSave()});
+if(pv){ss[0].value=pv;ss[1].innerHTML=cityOpts(pv);if(cv)ss[1].value=cv}
+if(dv)d.querySelector("input").value=dv;
+}
+addArea();
+gid("aa").addEventListener("click",function(){addArea()});
+
+/* Phase toggle */
+var phcbs=qa(".phcb");
+for(var pi=0;pi<phcbs.length;pi++){
+(function(cb){
+cb.addEventListener("change",function(){
+var ph=cb.getAttribute("data-ph");
+var show=cb.checked;
+var els=qa('.phd[data-ph="'+ph+'"]');
+for(var e=0;e<els.length;e++){
+if(show)els[e].style.display="";else els[e].style.display="none";
+}
+calcEst();doSave();
+});
+})(phcbs[pi]);
+}
+
+/* Estimate */
+function yen(n){return"&yen;"+n.toLocaleString()}
+function calcAll(){
+var phs=[["ph0","total0","disc0","sub0","tax0","inc0","taxBlock0","0"],["ph1","total1","disc1","sub1","tax1","inc1","taxBlock1","1"],["ph3","total3","disc3","sub3","tax3","inc3","taxBlock3","3"]];
+for(var p=0;p<phs.length;p++){
+var phEl=gid(phs[p][0]);if(!phEl)continue;
+var sum=0,cnt=0;
+var items=phEl.querySelectorAll(".item");
+for(var ii=0;ii<items.length;ii++){
+var cb=items[ii].querySelector(".icb");
+var pr=parseInt(items[ii].getAttribute("data-price")||0);
+if(cb&&cb.checked){if(pr>0){sum+=pr;cnt++}items[ii].classList.add("on")}
+else{items[ii].classList.remove("on")}
+}
+var totEl=gid(phs[p][1]);
+if(totEl)totEl.innerHTML=sum>0?yen(sum)+" <small>("+cnt+"項目)</small>":"—";
+var tb=gid(phs[p][6]);if(!tb)continue;
+if(sum<=0){tb.style.display="none";continue}
+tb.style.display="";
+var df=document.querySelector('.disc-field[data-ph="'+phs[p][7]+'"]');
+var dAmt=0;
+if(df&&df.value){
+var v=df.value.replace(/[,\s]/g,"");
+if(v.indexOf("%")>=0){var pct=parseFloat(v.replace(/%/g,""));if(!isNaN(pct))dAmt=Math.round(sum*pct/100)}
+else{var n=parseInt(v);if(!isNaN(n))dAmt=n}
+}
+var discEl=gid(phs[p][2]);if(discEl)discEl.textContent=dAmt!==0?yen(dAmt).replace("&yen;","\xA5"):"—";
+var subVal=sum+dAmt;if(subVal<0)subVal=0;
+var subEl=gid(phs[p][3]);if(subEl)subEl.innerHTML=yen(subVal);
+var taxVal=Math.floor(subVal*0.1);
+var taxEl=gid(phs[p][4]);if(taxEl)taxEl.innerHTML=yen(taxVal);
+var incVal=subVal+taxVal;
+var incEl=gid(phs[p][5]);if(incEl)incEl.innerHTML=yen(incVal);
+}
+}
+function calcEst(){calcAll()}
+function calcDisc(){calcAll()}
+var dfs2=qa(".disc-field");for(var di=0;di<dfs2.length;di++){dfs2[di].addEventListener("input",function(){calcAll();doSave()})}
+var icbs=qa(".icb");
+for(var ici=0;ici<icbs.length;ici++){
+icbs[ici].addEventListener("change",function(){calcEst();doSave()});
+}
+
+/* Save */
+var timer;
+function doSave(){clearTimeout(timer);timer=setTimeout(save,500)}
+document.addEventListener("input",doSave);
+document.addEventListener("change",doSave);
+function showHon(iid,hid){var inp=gid(iid);var hon=gid(hid);if(!inp||!hon)return;inp.addEventListener("input",function(){hon.style.display=inp.value.trim()?"inline":"none"})}
+showHon("f1","h1");showHon("f2","h2");showHon("ecl","hecl");
+function autoGrow(ta){ta.style.height="auto";ta.style.height=ta.scrollHeight+"px"}
+var tas2=qa("textarea");for(var tg=0;tg<tas2.length;tg++){(function(ta){ta.addEventListener("input",function(){autoGrow(ta)})})(tas2[tg])}
+function growAll(){var ts=qa("textarea");for(var i=0;i<ts.length;i++)autoGrow(ts[i])}
+function initHon(){var p=[["f1","h1"],["f2","h2"],["ecl","hecl"]];for(var i=0;i<p.length;i++){var inp=gid(p[i][0]);var hon=gid(p[i][1]);if(inp&&hon)hon.style.display=inp.value.trim()?"inline":"none"}}
+function save(){
+try{
+localStorage.setItem("th7",JSON.stringify(collect()));
+var d=new Date();
+gid("ss").textContent="自動保存済み（"+d.getHours()+":"+String(d.getMinutes()).padStart(2,"0")+")";
+gid("ss").style.color="#2a7d2a";
+}catch(e){}
+}
+function collect(){
+var d={};
+var ids=["f1","f2","f3","f4","f5","f6","ecl","epj"];
+for(var k=0;k<ids.length;k++){var e=gid(ids[k]);if(e)d[ids[k]]=e.value}
+d.corp=gid("corpSel").value;
+d.ar=[];var rows=ac.querySelectorAll(".ar");
+for(var r=0;r<rows.length;r++){var ss=rows[r].querySelectorAll("select");var inp=rows[r].querySelector("input");d.ar.push({p:ss[0].value,c:ss[1].value,d:inp?inp.value:""})}
+d.ch={};var cgs=qa(".cg");
+for(var g=0;g<cgs.length;g++){var s=[];var chs=cgs[g].querySelectorAll(".ch");for(var c=0;c<chs.length;c++){if(chs[c].classList.contains("on"))s.push(c)}d.ch[g]=s}
+d.oi=[];var ois=qa(".oi");for(var o=0;o<ois.length;o++)d.oi.push(ois[o].value);
+d.se=[];var sels=qa("select:not(#corpSel)");for(var s2=0;s2<sels.length;s2++)d.se.push(sels[s2].value);
+d.so=[];var sos=qa(".sel-other");for(var s3=0;s3<sos.length;s3++)d.so.push(sos[s3].value);
+d.ta=[];var tas=qa("textarea");for(var t=0;t<tas.length;t++)d.ta.push(tas[t].value);
+d.ti=[];var tis=qa('#pg0 input[type="text"]:not(.oi):not(.sel-other):not(#f1):not(#f2):not(#f3):not(#f4):not(#f5):not(#f6)');for(var t2=0;t2<tis.length;t2++)d.ti.push(tis[t2].value);
+d.icb=[];var icb2=qa(".icb");for(var i3=0;i3<icb2.length;i3++)d.icb.push(icb2[i3].checked);
+d.phcb=[];var ph2=qa(".phcb");for(var p2=0;p2<ph2.length;p2++)d.phcb.push(ph2[p2].checked);
+return d;
+}
+function apply(d){
+var ids=["f1","f2","f3","f4","f5","f6","ecl","epj"];
+for(var k=0;k<ids.length;k++){var e=gid(ids[k]);if(e&&d[ids[k]]!=null)e.value=d[ids[k]]}
+if(d.corp){gid("corpSel").value=d.corp;var c=CORPS[d.corp];if(c){gid("corpDetail").innerHTML=c.addr}}
+if(d.ar&&d.ar.length){ac.innerHTML="";an=0;for(var r=0;r<d.ar.length;r++)addArea(d.ar[r].p,d.ar[r].c,d.ar[r].d)}
+if(d.ch){var cgs=qa(".cg");for(var g=0;g<cgs.length;g++){var s=d.ch[g]||[];var chs=cgs[g].querySelectorAll(".ch");for(var c=0;c<chs.length;c++){if(s.indexOf(c)>=0)chs[c].classList.add("on");else chs[c].classList.remove("on")}var oi=cgs[g].nextElementSibling;if(oi&&oi.classList.contains("oi")&&cgs[g].querySelector(".ch[data-o].on"))oi.classList.add("show")}}
+if(d.oi){var ois=qa(".oi");for(var o=0;o<ois.length;o++){if(d.oi[o])ois[o].value=d.oi[o]}}
+if(d.se){var sels=qa("select:not(#corpSel)");for(var s2=0;s2<sels.length&&s2<d.se.length;s2++){sels[s2].value=d.se[s2];var inp=sels[s2].nextElementSibling;if(inp&&inp.classList.contains("sel-other")&&sels[s2].value==="その他")inp.classList.add("show")}}
+if(d.so){var sos=qa(".sel-other");for(var s3=0;s3<sos.length;s3++){if(d.so[s3]){sos[s3].value=d.so[s3];sos[s3].classList.add("show")}}}
+if(d.ta){var tas=qa("textarea");for(var t=0;t<tas.length&&t<d.ta.length;t++)tas[t].value=d.ta[t]}
+if(d.ti){var tis=qa('#pg0 input[type="text"]:not(.oi):not(.sel-other):not(#f1):not(#f2):not(#f3):not(#f4):not(#f5):not(#f6)');for(var t2=0;t2<tis.length&&t2<d.ti.length;t2++)tis[t2].value=d.ti[t2]}
+if(d.icb){var icb2=qa(".icb");for(var i3=0;i3<icb2.length&&i3<d.icb.length;i3++)icb2[i3].checked=d.icb[i3]}
+if(d.phcb){var ph2=qa(".phcb");for(var p2=0;p2<ph2.length&&p2<d.phcb.length;p2++){ph2[p2].checked=d.phcb[p2];var ph=ph2[p2].getAttribute("data-ph");var els=qa('.phd[data-ph="'+ph+'"]');for(var e=0;e<els.length;e++){if(d.phcb[p2])els[e].style.display="";else els[e].style.display="none"}}}
+if(d.disc){var dfs=qa(".disc-field");for(var df=0;df<dfs.length&&df<d.disc.length;df++)dfs[df].value=d.disc[df]}
+if(d.dmemo){var dms=qa(".disc-memo");for(var dm=0;dm<dms.length&&dm<d.dmemo.length;dm++)dms[dm].value=d.dmemo[dm]}
+}
+
+/* Buttons */
+gid("btnP1").addEventListener("click",function(){
+var c=CORPS[gid("corpSel").value];
+var el=gid("prnHC");if(el)el.innerHTML="<strong>"+c.name+"</strong><br>"+c.addr;
+var f1v=gid("f1").value;var cli=gid("prnHCli");
+if(cli)cli.textContent=f1v?(f1v+" 御中"):"";
+var hdt=gid("prnHDt");
+if(hdt)hdt.textContent=new Date().toISOString().slice(0,10).replace(/-/g,"/");
+var f2v=gid("f2").value;var e2=gid("prnF2");if(e2)e2.textContent=f2v?(f2v+" 様"):"";
+var e3=gid("prnF3");if(e3)e3.textContent=gid("f3").value||"";
+var e4=gid("prnF4");if(e4)e4.textContent=gid("f4").value||"";
+var e5=gid("prnF5");if(e5)e5.textContent=gid("f5").value||"";
+var e6=gid("prnF6");if(e6)e6.textContent=gid("f6").value||"";
+document.body.classList.add("pr-h");document.body.classList.remove("pr-e");
+setTimeout(function(){window.print();document.body.classList.remove("pr-h")},200);
+});
+gid("btnP2").addEventListener("click",function(){
+var c=CORPS[gid("corpSel").value];
+var el=gid("prnECo");if(el)el.innerHTML="<strong>"+c.name+"</strong><br>"+c.addr;
+var cn=gid("ecl");var ec=gid("prnEC");if(ec)ec.textContent=(cn&&cn.value?cn.value:"クライアント名")+" 御中";
+var dtv=new Date().toISOString().slice(0,10).replace(/-/g,"/");
+var ed=gid("prnED");if(ed)ed.textContent=dtv;
+var epj=gid("epj");var ep=gid("prnEPj2");if(ep)ep.textContent=epj&&epj.value?("案件名："+epj.value):"";
+var sn=gid("prnSN");if(sn)sn.textContent=c.name;
+document.body.classList.add("pr-e");document.body.classList.remove("pr-h");
+setTimeout(function(){window.print();document.body.classList.remove("pr-e")},200);
+});
+gid("btnT1").addEventListener("click",function(){
+var t="ヒアリングシート\n"+gid("f1").value+"\n";
+var secs=qa("#pg0 .sec");
+for(var i=0;i<secs.length;i++){
+var tt=secs[i].querySelector(".sec-t");if(!tt)continue;t+="■ "+tt.textContent+"\n";
+var ons=secs[i].querySelectorAll(".ch.on");for(var j=0;j<ons.length;j++)t+="  "+ons[j].textContent.trim()+"\n";
+var sels=secs[i].querySelectorAll("select");for(var k=0;k<sels.length;k++){if(sels[k].value)t+="  "+sels[k].value+"\n"}
+var tas=secs[i].querySelectorAll("textarea");for(var l=0;l<tas.length;l++){if(tas[l].value)t+="  "+tas[l].value+"\n"}
+t+="\n";
+}
+var b=new Blob([t],{type:"text/plain;charset=utf-8"});var a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="hearing.txt";a.click();
+});
+gid("btnD1").addEventListener("click",doDownload);
+gid("btnD2").addEventListener("click",doDownload);
+function doDownload(){
+var d=collect();var h="<!DOCTYPE html>"+document.documentElement.outerHTML;
+h=h.replace(/<!--ED-->[\s\S]*?<!--\/ED-->/g,"");
+h=h.replace("</body>",'<!--ED--><scr'+'ipt>var ED='+JSON.stringify(d)+';<\/scr'+'ipt><!--/ED--></body>');
+var b=new Blob([h],{type:"text/html;charset=utf-8"});var a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="hearing.html";a.click();
+}
+gid("btnClr").addEventListener("click",function(){
+if(!confirm("すべてクリアしますか？"))return;
+try{localStorage.removeItem("th7")}catch(e){}
+var ins=qa('input[type="text"],textarea');for(var i=0;i<ins.length;i++)ins[i].value="";
+var sels=qa("select");for(var j=0;j<sels.length;j++)sels[j].selectedIndex=0;
+var ons=qa(".ch.on");for(var k=0;k<ons.length;k++)ons[k].classList.remove("on");
+var ois=qa(".oi,.sel-other");for(var l=0;l<ois.length;l++){ois[l].classList.remove("show");ois[l].value=""}
+ac.innerHTML="";an=0;addArea();
+gid("corpSel").value="A";gid("corpSel").dispatchEvent(new Event("change"));
+var icbs2=qa(".icb");for(var m=0;m<icbs2.length;m++)icbs2[m].checked=false;
+var phcbs2=qa(".phcb");for(var n=0;n<phcbs2.length;n++){phcbs2[n].checked=false;var ph=phcbs2[n].getAttribute("data-ph");var els=qa('.phd[data-ph="'+ph+'"]');for(var e=0;e<els.length;e++)els[e].style.display="none"}
+calcEst();gid("ss").textContent="クリア済み";gid("ss").style.color="#C8161D";
+});
+
+/* Init */
+gid("edt").value=new Date().toISOString().slice(0,10).replace(/-/g,"/");
+try{
+if(typeof ED!=="undefined"){apply(ED);gid("ss").textContent="ファイルから復元";gid("ss").style.color="#2a7d2a"}
+else{var r=localStorage.getItem("th7");if(r){apply(JSON.parse(r));gid("ss").textContent="前回を復元";gid("ss").style.color="#2a7d2a"}}
+}catch(e){console.error(e)}
+calcEst();calcDisc();initHon();growAll();setTimeout(growAll,300);
+});
+</script>
+</body></html>
